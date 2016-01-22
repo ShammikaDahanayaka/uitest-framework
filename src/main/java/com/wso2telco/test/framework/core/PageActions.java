@@ -21,10 +21,11 @@ public interface PageActions {
 	
 	
 	public WebPelement defineEelement(UIType uiType,String value);
+	public WebPelement defineEelement(UIType uiType,String value,String description);
 	//public WebPelement locate(WebPelement telement);
 	public void selectItem(WebPelement pelement, String tagName, String textToContain)
 			throws Exception;
-	public WebElement getElement(WebPelement telement);
+	public WebPelement getElement(WebPelement telement);
 
 	/**
 	 * Jan 8, 2016
