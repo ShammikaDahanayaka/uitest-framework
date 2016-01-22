@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 public interface WebPelement extends WebElement {
 	
 	public void initialize()throws Exception;
-	/*public UIType getUiType ();
-	public String getUiValue ();*/
-
+	
+	public void  sendEnter();
+	public void  clearAndSendkeys(CharSequence... keysToSend);
 }
