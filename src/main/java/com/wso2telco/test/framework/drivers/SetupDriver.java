@@ -26,8 +26,7 @@ public class SetupDriver {
 	}
 
 	public WebDriver launchWebDriver() {
-		String browserFromConfig = 
-				conf.getValue(ConfigurationKeys.BROWSER.getCongfigKey());
+		String browserFromConfig = conf.getValue(ConfigurationKeys.BROWSER.getCongfigKey());
 		
 		Browser browser;
 		try {
@@ -46,11 +45,16 @@ public class SetupDriver {
 	}
 
 	private WebDriver getWebDriver(Browser browser) {
-
+		String downloadPath = conf.getValue("downloadPath");
 		switch (browser) {
 		case FIREFOX:
 			if (firefoxProfile == null && desiredCapabilities == null) {
-				return new FirefoxDriver();
+				FirefoxProfile profile = new FirefoxProfile();
+				profile.setPreference("browser.download.folderList",2);
+				profile.setPreference("browser.download.manager.showWhenStarting",false);
+				profile.setPreference("browser.download.dir",downloadPath);
+				profile.setPreference("browser.helperApps.neverAsk.saveToDisk","application/xls,text/csv,application/vnd.ms-excel");
+				return new FirefoxDriver(profile);
 			} else if (firefoxProfile != null && desiredCapabilities == null) {
 				return new FirefoxDriver(firefoxProfile);
 			} else if (firefoxProfile == null && desiredCapabilities != null) {
