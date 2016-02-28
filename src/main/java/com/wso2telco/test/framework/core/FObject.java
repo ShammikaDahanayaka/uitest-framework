@@ -11,9 +11,9 @@ public abstract class FObject extends BaseObject{
 	public FObject() {
 	}
 
-	public FObject(WebDriver driver) {
+	public FObject(WebDriver webDriver) {
 		super();
-		this.driver = driver;
+		driver = webDriver;
 	}
 
 	
