@@ -13,7 +13,7 @@ public abstract class FObject extends BaseObject{
 
 	public FObject(WebDriver driver) {
 		super();
-		this.driver = driver;
+		FObject.driver = driver;
 	}
 
 	
