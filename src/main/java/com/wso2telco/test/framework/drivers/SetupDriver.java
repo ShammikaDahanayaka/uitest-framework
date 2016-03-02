@@ -77,7 +77,7 @@ public class SetupDriver {
 			capabilities.setCapability("ignoreProtectedModeSettings", true);
 			capabilities.setCapability("ignoreZoomSetting", true);
 			capabilities.setCapability("ie.ensureCleanSession", true);
-			capabilities.setCapability("nativeEvents",false);
+			//capabilities.setCapability("nativeEvents",false);
 			capabilities.setCapability("requireWindowFocus",true);
 			capabilities.setCapability("IntroduceInstabilityByIgnoringProtectedModeSettings",true);
 			return new InternetExplorerDriver(capabilities);
