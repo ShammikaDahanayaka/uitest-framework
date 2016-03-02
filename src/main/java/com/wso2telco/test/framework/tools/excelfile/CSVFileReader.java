@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.HashMap;
 
 // TODO: Auto-generated Javadoc
@@ -16,38 +15,22 @@ import java.util.HashMap;
  */
 public class CSVFileReader {
 
-	/**
-	 * Csv column count.
-	 *
-	 * @param filePath
-	 *            the file path
-	 * @return the int
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
 	public int csvColumnCount(String filePath) throws IOException {
 		int counter = 0;
 		File file = new File(filePath);
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = br.readLine();
 		for (int f = 0; f < line.length(); f++) {
+			if(!(line.equals(""))){
 			if (line.charAt(f) == ',') {
 				counter++;
+			}
 			}
 		}
 		br.close();
 		return counter;
 	}
 
-	/**
-	 * Csv row count.
-	 *
-	 * @param filePath
-	 *            the file path
-	 * @return the int
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
-	 */
 	public int csvRowCount(String filePath) throws IOException {
 		File file = new File(filePath);
 		InputStream is = new BufferedInputStream(new FileInputStream(file));
@@ -62,6 +45,7 @@ public class CSVFileReader {
 				if (c[i] == '\n') {
 					++count;
 				}
+				
 			}
 		}
 
@@ -71,13 +55,6 @@ public class CSVFileReader {
 		return count;
 	}
 
-	/**
-	 * Read data.
-	 *
-	 * @param filePath the file path
-	 * @return the hash map
-	 * @throws IOException             Signals that an I/O exception has occurred.
-	 */
 	public HashMap<Integer, String[]> readDataFromCSV(String filePath) throws IOException {
 		
 		int rowNumber = 0;
@@ -95,28 +72,28 @@ public class CSVFileReader {
 
 			// Get all tokens available in line
 			String[] tokens = line.split(DELIMITER);
-
 			map.put(rowNumber, tokens);
 		}
 			}
 		fileReader.close();
 		return map;
 	}
-	
-	/**
-	 * Prints the csv values.
-	 */
-	public void printCSVValues(HashMap<Integer, String[]> map){
-		
+
+	public String[][] getCSVValues(HashMap<Integer, String[]> map) throws IOException {
+		int row = map.size();
+		String apiListDetails[][] = new String[row][9];
+		for (int i = 0; i < row;) {
 		for (Integer key : map.keySet()) {
-			System.out
-					.println("------------------------------------------------");
-
-			System.out.println("row number: " + key);
-
 			String[] result = map.get(key);
-			System.out.println(" Row values" + Arrays.toString(result));
+			int column =  result.length;
+				for (int x = 0; x < column;) {
+					apiListDetails[i][x] = result[x].trim();
+					x++;
+				}
+				i++;
+			}
 		}
+		return apiListDetails;
 	}
 
 }
