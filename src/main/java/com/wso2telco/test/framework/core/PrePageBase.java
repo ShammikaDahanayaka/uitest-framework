@@ -100,12 +100,22 @@ public class PrePageBase extends FObject implements PageActions {
 		ArrayList<String> actFirstSecQstList = new ArrayList<String>();
 		//WebElement select = getElementByXpath(xpath, driver);
 		WebElement select = getElement(uiType,xpath);
-		List<WebElement> options = select
-				.findElements(By.tagName("option"));
+		List<WebElement> options = select.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			actFirstSecQstList.add(option.getText());
 			}
 		return actFirstSecQstList;
+	}
+	
+	public ArrayList<String> verifyContent(UIType uiType, String xpath) throws Exception{
+		ArrayList<String> actFirstSecQstList = new ArrayList<String>();
+		WebElement select = getElement(uiType,xpath);
+		List<WebElement> options = select.findElements(By.xpath(xpath));
+		for (WebElement option : options) {
+			actFirstSecQstList.add(option.getText());
+			}
+		return actFirstSecQstList;
+		// need to verify this method
 	}
 
 	@Override

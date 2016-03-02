@@ -3,8 +3,10 @@ package com.wso2telco.test.framework.drivers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wso2telco.test.framework.configuration.Configuration;
@@ -24,8 +26,7 @@ public class SetupDriver {
 	}
 
 	public WebDriver launchWebDriver() {
-		String browserFromConfig = 
-				conf.getValue(ConfigurationKeys.BROWSER.getCongfigKey());
+		String browserFromConfig = conf.getValue(ConfigurationKeys.BROWSER.getCongfigKey());
 		
 		Browser browser;
 		try {
@@ -44,7 +45,6 @@ public class SetupDriver {
 	}
 
 	private WebDriver getWebDriver(Browser browser) {
-
 		switch (browser) {
 		case FIREFOX:
 			if (firefoxProfile == null && desiredCapabilities == null) {
@@ -56,14 +56,18 @@ public class SetupDriver {
 			}
 
 		case CHROME:
-			String chromeDriverPath = conf.getValue(String
-					.valueOf(ConfigurationKeys.CHROME_DRIVER_PATH));
-			System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-			return new ChromeDriver();
+			 if (desiredCapabilities != null) {
+				 return new ChromeDriver(desiredCapabilities);
+			}else{
+				return new ChromeDriver();
+			}
+
 		case INTERNETEXPLORER:
-			String ieDriverPath = conf.getValue(String
-					.valueOf(ConfigurationKeys.IE_DRIVER_PATH));
-			System.setProperty("webdriver.ie.driver", ieDriverPath);
+			if (desiredCapabilities != null) {
+				return new InternetExplorerDriver(desiredCapabilities);
+			}else{
+				return new InternetExplorerDriver();
+			}
 		default:
 			return new FirefoxDriver();
 		}

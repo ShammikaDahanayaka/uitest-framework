@@ -12,5 +12,5 @@ LinkText,
 PartialLinkText,
 TagName,
 Css,
-Xpath,
+Xpath, Link, PartialLink, Text,
 }
