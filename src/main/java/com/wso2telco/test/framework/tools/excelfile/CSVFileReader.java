@@ -10,6 +10,10 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CSVFileReader.
+ */
 public class CSVFileReader {
 
 	/**
@@ -70,10 +74,11 @@ public class CSVFileReader {
 	/**
 	 * Read data.
 	 *
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @param filePath the file path
+	 * @return the hash map
+	 * @throws IOException             Signals that an I/O exception has occurred.
 	 */
-	public void readDataFromCSV(String filePath) throws IOException {
+	public HashMap<Integer, String[]> readDataFromCSV(String filePath) throws IOException {
 		
 		int rowNumber = 0;
 		HashMap<Integer, String[]> map = new HashMap<Integer, String[]>();
@@ -92,8 +97,17 @@ public class CSVFileReader {
 			String[] tokens = line.split(DELIMITER);
 
 			map.put(rowNumber, tokens);
-		}}
-
+		}
+			}
+		fileReader.close();
+		return map;
+	}
+	
+	/**
+	 * Prints the csv values.
+	 */
+	public void printCSVValues(HashMap<Integer, String[]> map){
+		
 		for (Integer key : map.keySet()) {
 			System.out
 					.println("------------------------------------------------");
@@ -103,9 +117,6 @@ public class CSVFileReader {
 			String[] result = map.get(key);
 			System.out.println(" Row values" + Arrays.toString(result));
 		}
-
-		fileReader.close();
-
 	}
 
 }
