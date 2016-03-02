@@ -39,6 +39,11 @@ public class TableComponent {
 		return rows;
 	}
 	
+	public List<WebElement> getAllColumn(){
+		List<WebElement> columns = tableComponentElement.findElements(By.xpath("child::tr/th"));
+		return columns;
+	}
+	
 	/**
 	 * Gets the cell from row.
 	 *
