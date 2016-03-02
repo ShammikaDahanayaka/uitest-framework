@@ -3,8 +3,10 @@ package com.wso2telco.test.framework.drivers;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wso2telco.test.framework.configuration.Configuration;
@@ -24,8 +26,7 @@ public class SetupDriver {
 	}
 
 	public WebDriver launchWebDriver() {
-		String browserFromConfig = 
-				conf.getValue(ConfigurationKeys.BROWSER.getCongfigKey());
+		String browserFromConfig = conf.getValue(ConfigurationKeys.BROWSER.getCongfigKey());
 		
 		Browser browser;
 		try {
@@ -44,11 +45,16 @@ public class SetupDriver {
 	}
 
 	private WebDriver getWebDriver(Browser browser) {
-
+		String downloadPath = conf.getValue("downloadPath");
 		switch (browser) {
 		case FIREFOX:
 			if (firefoxProfile == null && desiredCapabilities == null) {
-				return new FirefoxDriver();
+				FirefoxProfile profile = new FirefoxProfile();
+				profile.setPreference("browser.download.folderList",2);
+				profile.setPreference("browser.download.manager.showWhenStarting",false);
+				profile.setPreference("browser.download.dir",downloadPath);
+				profile.setPreference("browser.helperApps.neverAsk.saveToDisk","application/xls,text/csv,application/vnd.ms-excel");
+				return new FirefoxDriver(profile);
 			} else if (firefoxProfile != null && desiredCapabilities == null) {
 				return new FirefoxDriver(firefoxProfile);
 			} else if (firefoxProfile == null && desiredCapabilities != null) {
@@ -56,14 +62,25 @@ public class SetupDriver {
 			}
 
 		case CHROME:
-			String chromeDriverPath = conf.getValue(String
-					.valueOf(ConfigurationKeys.CHROME_DRIVER_PATH));
+			String chromeDriverPath = conf.getValue(String.valueOf(ConfigurationKeys.CHROME_DRIVER_PATH));
 			System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-			return new ChromeDriver();
+			desiredCapabilities = DesiredCapabilities.chrome();
+			ChromeOptions chromeOptions = new ChromeOptions();
+			chromeOptions.addArguments("test-type");
+			desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+			return new ChromeDriver(desiredCapabilities);
 		case INTERNETEXPLORER:
-			String ieDriverPath = conf.getValue(String
-					.valueOf(ConfigurationKeys.IE_DRIVER_PATH));
+			String ieDriverPath = conf.getValue(String.valueOf(ConfigurationKeys.IE_DRIVER_PATH));
 			System.setProperty("webdriver.ie.driver", ieDriverPath);
+			DesiredCapabilities capabilities = new DesiredCapabilities();
+			capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, false);
+			capabilities.setCapability("ignoreProtectedModeSettings", true);
+			capabilities.setCapability("ignoreZoomSetting", true);
+			capabilities.setCapability("ie.ensureCleanSession", true);
+			capabilities.setCapability("nativeEvents",false);
+			capabilities.setCapability("requireWindowFocus",true);
+			capabilities.setCapability("IntroduceInstabilityByIgnoringProtectedModeSettings",true);
+			return new InternetExplorerDriver(capabilities);
 		default:
 			return new FirefoxDriver();
 		}
