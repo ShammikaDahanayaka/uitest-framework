@@ -74,7 +74,7 @@ public class CSVFileReader {
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public void readDataFromCSV(String filePath) throws IOException {
-
+		
 		int rowNumber = 0;
 		HashMap<Integer, String[]> map = new HashMap<Integer, String[]>();
 
@@ -86,11 +86,13 @@ public class CSVFileReader {
 
 		while ((line = fileReader.readLine()) != null) {
 			rowNumber++;
+			if(!(line.equals(""))){
+
 			// Get all tokens available in line
 			String[] tokens = line.split(DELIMITER);
 
 			map.put(rowNumber, tokens);
-		}
+		}}
 
 		for (Integer key : map.keySet()) {
 			System.out
