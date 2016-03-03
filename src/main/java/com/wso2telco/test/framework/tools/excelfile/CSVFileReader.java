@@ -44,18 +44,13 @@ public class CSVFileReader {
 	 * Convert csv to xlsx.
 	 *
 	 * @author SulakkhanaW
-	 * @param filePath
-	 *            the file path
-	 * @param csvFileName
-	 *            the csv file name
-	 * @param xlsxFileName
-	 *            the xlsx file name
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @param filePath the file path
+	 * @param csvFileName the csv file name
+	 * @param xlsxFileName the xlsx file name
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	@SuppressWarnings("deprecation")
-	public void convertCSVToXLSX(String filePath, String csvFileName,
-			String xlsxFileName) throws IOException {
+	public void convertCSVToXLSX(String filePath, String csvFileName, String xlsxFileName) throws IOException {
 		String xlsxOutputPath = filePath + "/" + xlsxFileName;
 		String csvFilePath = filePath + "/" + csvFileName;
 		ArrayList<ArrayList<String>> allRowAndColData = null;
@@ -91,15 +86,14 @@ public class CSVFileReader {
 		}
 	}
 
+
 	/**
 	 * Csv column count.
 	 *
 	 * @author SulakkhanaW
-	 * @param filePath
-	 *            the file path
+	 * @param filePath the file path
 	 * @return the int
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public int csvColumnCount(String filePath) throws IOException {
 		int counter = 0;
@@ -121,11 +115,9 @@ public class CSVFileReader {
 	 * Csv row count.
 	 *
 	 * @author SulakkhanaW
-	 * @param filePath
-	 *            the file path
+	 * @param filePath the file path
 	 * @return the int
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public int csvRowCount(String filePath) throws IOException {
 		File file = new File(filePath);
@@ -152,14 +144,11 @@ public class CSVFileReader {
 	 * Read data from csv.
 	 *
 	 * @author SulakkhanaW
-	 * @param filePath
-	 *            the file path
+	 * @param filePath the file path
 	 * @return the hash map
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public HashMap<Integer, String[]> readDataFromCSV(String filePath)
-			throws IOException {
+	public HashMap<Integer, String[]> readDataFromCSV(String filePath) throws IOException {
 		int rowNumber = 0;
 		HashMap<Integer, String[]> map = new HashMap<Integer, String[]>();
 		final String DELIMITER = ",";
@@ -180,14 +169,11 @@ public class CSVFileReader {
 	 * Gets the CSV values.
 	 *
 	 * @author SulakkhanaW
-	 * @param map
-	 *            the map
+	 * @param map the map
 	 * @return the CSV values
-	 * @throws IOException
-	 *             Signals that an I/O exception has occurred.
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public String[][] getCSVValues(HashMap<Integer, String[]> map)
-			throws IOException {
+	public String[][] getCSVValues(HashMap<Integer, String[]> map) throws IOException {
 		int row = map.size();
 		String apiListDetails[][] = new String[row][9];
 		for (int i = 0; i < row;) {
