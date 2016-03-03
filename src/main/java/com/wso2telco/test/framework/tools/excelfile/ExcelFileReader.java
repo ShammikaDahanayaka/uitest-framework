@@ -667,7 +667,40 @@ public class ExcelFileReader {
 		}
 
 		return true;
+	}
 
+	/**
+	 * Gets the desired value.
+	 *
+	 * @author IsuruM
+	 * @param capitalList the capital list
+	 * @param selectField the select field
+	 * @param fromField the from field
+	 * @param matchingValue the matching value
+	 * @return the desired value
+	 */
+	public String getDesiredValue(List<List<String>> capitalList, String selectField, String fromField, String matchingValue) {
+		String value = null;
+		int count = 0;
+		int rowCount = capitalList.size();
+		List<String> selectRowList = capitalList.get(0);
+		try {
+			if (selectRowList.contains(fromField)) {
+				for (int i = 1; i < rowCount; i++) {
+					selectRowList = capitalList.get(i);
+					if (selectRowList.contains(matchingValue)) {
+						count = count + 1;
+					}
+				}
+				selectRowList = capitalList.get(0);
+				int index = selectRowList.indexOf(selectField);
+				selectRowList = capitalList.get(count);
+				value = selectRowList.get(index);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return value;
 	}
 
 }
