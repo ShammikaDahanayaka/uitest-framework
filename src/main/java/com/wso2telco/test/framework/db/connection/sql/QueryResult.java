@@ -39,7 +39,7 @@ public class QueryResult {
 	 * @return the all values
 	 */
 	public List<String> getAllValues(String label) {
-		label = label.toUpperCase();
+		//label = label.toUpperCase();
 		List<String> list = new ArrayList<>();
 		if (result.isEmpty()) {
 			return list;
