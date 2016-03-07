@@ -683,18 +683,24 @@ public class ExcelFileReader {
 		String value = null;
 		int count = 0;
 		int rowCount = capitalList.size();
+		int selectFieldNumber = 0;
 		List<String> selectRowList = capitalList.get(0);
 		try {
+			for (int x = 0; x < selectRowList.size(); x++){
+				String columnValue = selectRowList.get(x);
+				if (columnValue.contains(selectField)){
+					selectFieldNumber = x;
+				}
+			}
 			if (selectRowList.contains(fromField)) {
 				for (int i = 1; i < rowCount; i++) {
 					selectRowList = capitalList.get(i);
 					if (selectRowList.contains(matchingValue)) {
-						count = count + 1;
+						count = i;
 					}
 				}
-				selectRowList = capitalList.get(0);
-				int index = selectRowList.indexOf(selectField);
 				selectRowList = capitalList.get(count);
+				int index = selectFieldNumber;
 				value = selectRowList.get(index);
 			}
 		} catch (Exception e) {
