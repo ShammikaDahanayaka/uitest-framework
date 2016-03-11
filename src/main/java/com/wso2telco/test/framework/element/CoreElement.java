@@ -181,18 +181,6 @@ public class CoreElement extends BasicElement implements WebPelement{
 		return element.findElement(by);
 	}
 	
-	
-	public List<WebPelement> findPelements(By by) {
-		// TODO Auto-generated method stub
-		return element.findElements(by);
-	}
-
-	
-	public WebPelement findPelement(By by) {
-		// TODO Auto-generated method stub
-		return element.findElement(by);
-	}
-
 	@Override
 	public boolean isDisplayed() {
 		// TODO Auto-generated method stub
