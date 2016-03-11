@@ -180,7 +180,7 @@ public class CoreElement extends BasicElement implements WebPelement{
 		// TODO Auto-generated method stub
 		return element.findElement(by);
 	}
-
+	
 	@Override
 	public boolean isDisplayed() {
 		// TODO Auto-generated method stub

@@ -1,7 +1,7 @@
 package com.wso2telco.test.framework.util;
 
 public enum Default {
-	CONFIG_PATH("/config/config.cfg"),
+	CONFIG_PATH("/config/config.properties"),
 	DRIVER_BROWSER("firefox");
 	
 	

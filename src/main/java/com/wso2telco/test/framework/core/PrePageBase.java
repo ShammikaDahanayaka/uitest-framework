@@ -8,8 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.wso2telco.test.framework.core.FObject;
 import com.wso2telco.test.framework.element.CoreElement;
+import com.wso2telco.test.framework.element.table.Table;
 import com.wso2telco.test.framework.util.UIType;
 
 public class PrePageBase extends FObject implements PageActions {
@@ -100,12 +100,22 @@ public class PrePageBase extends FObject implements PageActions {
 		ArrayList<String> actFirstSecQstList = new ArrayList<String>();
 		//WebElement select = getElementByXpath(xpath, driver);
 		WebElement select = getElement(uiType,xpath);
-		List<WebElement> options = select
-				.findElements(By.tagName("option"));
+		List<WebElement> options = select.findElements(By.tagName("option"));
 		for (WebElement option : options) {
 			actFirstSecQstList.add(option.getText());
 			}
 		return actFirstSecQstList;
+	}
+	
+	public ArrayList<String> verifyContent(UIType uiType, String xpath) throws Exception{
+		ArrayList<String> actFirstSecQstList = new ArrayList<String>();
+		WebElement select = getElement(uiType,xpath);
+		List<WebElement> options = select.findElements(By.xpath(xpath));
+		for (WebElement option : options) {
+			actFirstSecQstList.add(option.getText());
+			}
+		return actFirstSecQstList;
+		// need to verify this method
 	}
 
 	@Override
@@ -145,6 +155,7 @@ public class PrePageBase extends FObject implements PageActions {
 		
 		try {
 			WebElement select = getElement(pelement);
+			select.click();
 			List<WebElement> options = select
 					.findElements(By.tagName(tagName));
 			for (WebElement option : options) {
@@ -166,6 +177,20 @@ public class PrePageBase extends FObject implements PageActions {
 			String description) {
 		pelement = new CoreElement(uiType, value,description);
 		return pelement;
+	}
+	@Override
+	public Table getTable(UIType uiType, String value) {
+		// TODO Auto-generated method stub
+		Table table =null;
+		try {
+			WebElement ele=getElement(uiType, value);
+			table = new Table(ele);
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		return table;
+		
 	}
 
 }
