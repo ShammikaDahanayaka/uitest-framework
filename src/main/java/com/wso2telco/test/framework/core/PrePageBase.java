@@ -159,8 +159,9 @@ public class PrePageBase extends FObject implements PageActions {
 			List<WebElement> options = select
 					.findElements(By.tagName(tagName));
 			for (WebElement option : options) {
-				if (textToContain.equals(option.getText())) {
+				if (textToContain.equals(option.getText().trim())) {
 					option.click();
+					break;
 				}
 			}
 		} 

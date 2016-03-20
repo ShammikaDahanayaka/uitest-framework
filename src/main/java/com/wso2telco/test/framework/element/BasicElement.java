@@ -11,6 +11,7 @@ public class BasicElement extends FObject{
 	protected String description="";
 	protected WebElement element;
 	
+	
 	public BasicElement(UIType uiType, String value) {
 		super();
 		this.uiType = uiType;
