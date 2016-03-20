@@ -22,8 +22,11 @@ public class CoreElement extends BasicElement implements WebPelement{
 	Logger logger = Logger.getLogger(CoreElement.class);
 	
 	private WebElement element;
+	protected boolean isAvaialble;
 	
-    public CoreElement(UIType uiType, String value) {
+    
+
+	public CoreElement(UIType uiType, String value) {
 		super(uiType, value);
 		
 	}
@@ -39,15 +42,17 @@ public class CoreElement extends BasicElement implements WebPelement{
 		try {
 			
 			logger.debug("Locating element " + getUiType() + ":" + getUiValue());
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 			List<WebElement> found = driver.findElements(getBy(uiType,uiValue));
 			if (found.size() > 0) {
 				logger.debug("Found element " + getUiType() + ":" + getUiValue());
 				element = found.get(0);
+				setAvaialble(true);
 				if(found.size() > 1)
 					logger.debug("Found more than one element " + getUiType() + ":" + getUiValue());
 			}
 		} catch (Exception e) {
+			setAvaialble(false);
 			logInstruction("Cannot Get Element by "+uiType+"-'getElement()" + uiValue
 					+ ":" + e.getMessage());
 			throw new Exception("Cannot Get Element by "+uiType+"-'getElement()'"
@@ -238,9 +243,19 @@ public class CoreElement extends BasicElement implements WebPelement{
 		
 	}
 
-
 	
 
+
+
+	private void setAvaialble(boolean isAvaialble) {
+		this.isAvaialble = isAvaialble;
+	}
+
+	@Override
+	public boolean isAvailable() {
+		// TODO Auto-generated method stub
+		return isAvaialble;
+	}
 	
 
 }
