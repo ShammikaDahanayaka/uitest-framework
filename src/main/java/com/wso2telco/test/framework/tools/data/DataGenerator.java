@@ -4,6 +4,13 @@ import java.util.Random;
 
 public class DataGenerator {
 
+	/**
+	 * Generate random number.
+	 *
+	 * @author JayaniP
+	 * @param num the num
+	 * @return the string
+	 */
 	public String generateRandomNumber(int num){
 		String number = "";
 		Random generator = new Random();
