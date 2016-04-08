@@ -114,7 +114,7 @@ public class ExcelFileReader {
 						List<String> data = new ArrayList<String>();
 						while (cells.hasNext()) {
 							XSSFCell cell = (XSSFCell) cells.next();
-							data.add(formatter.formatCellValue(cell));
+							data.add(formatter.formatCellValue(cell).trim());
 						}
 						sheetdata.add(data);
 					}
