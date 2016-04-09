@@ -92,12 +92,11 @@ public class ExcelFileReader {
 	 * Read excel file.
 	 *
 	 * @author SulakkhanaW
-	 * @param path the path
 	 * @param givenSheetName the given sheet name
 	 * @return the list
 	 */
-	public List<List<String>> readExcelFile(String path, String givenSheetName){
-		this.path = path;
+	public List<List<String>> readExcelFile(String givenSheetName) {
+		removeEmptyRow(givenSheetName);
 		List<List<String>> sheetdata = new ArrayList<List<String>>();
 		DataFormatter formatter = new DataFormatter();
 		try {
@@ -109,24 +108,73 @@ public class ExcelFileReader {
 					workbook.setActiveSheet(i);
 					sheet = workbook.getSheetAt(i);
 					Iterator<Row> rows = sheet.rowIterator();
-		            while (rows.hasNext()) {
-		                XSSFRow row = (XSSFRow) rows.next();
-		                Iterator<Cell> cells = row.cellIterator();
-		                List<String> data = new ArrayList<String>();
-		                while (cells.hasNext()) {
-		                    XSSFCell cell = (XSSFCell) cells.next();
-		                    data.add(formatter.formatCellValue(cell));
-		                }
-		                sheetdata.add(data);
-		            }
+					while (rows.hasNext()) {
+						XSSFRow row = (XSSFRow) rows.next();
+						Iterator<Cell> cells = row.cellIterator();
+						List<String> data = new ArrayList<String>();
+						while (cells.hasNext()) {
+							XSSFCell cell = (XSSFCell) cells.next();
+							data.add(formatter.formatCellValue(cell).trim());
+						}
+						sheetdata.add(data);
+					}
 				}
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		}catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return sheetdata;
+	}
+	
+	/**
+	 * Removes the empty row.
+	 *
+	 * @author SulakkhanaW
+	 * @param givenSheetName the given sheet name
+	 */
+	public void removeEmptyRow(String givenSheetName){
+		boolean isRowEmpty = false;
+		try {
+			fis = new FileInputStream(new File(path));
+			workbook = new XSSFWorkbook(fis);
+			int sheetNumbers = workbook.getNumberOfSheets();
+			for (int i = 0; i < sheetNumbers; i++) {
+				if (givenSheetName.equals(workbook.getSheetName(i))) {
+					workbook.setActiveSheet(i);
+					sheet = workbook.getSheetAt(i);
+
+					for (int x = 0; x < sheet.getLastRowNum(); x++) {
+						if (sheet.getRow(x) == null) {
+							sheet.shiftRows(x + 1, sheet.getLastRowNum(), -1);
+							i--;
+							continue;
+						}
+						for (int j = 0; j < sheet.getRow(x).getLastCellNum(); j++) {
+							if (sheet.getRow(x).getCell(j).toString().trim()
+									.equals("")) {
+								isRowEmpty = true;
+							} else {
+								isRowEmpty = false;
+								break;
+							}
+						}
+						if (isRowEmpty == true) {
+							sheet.shiftRows(x + 1, sheet.getLastRowNum(), -1);
+							x--;
+						}
+					}
+					fileOut = new FileOutputStream(path);
+					workbook.write(fileOut);
+					fileOut.close();
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -619,7 +667,46 @@ public class ExcelFileReader {
 		}
 
 		return true;
+	}
 
+	/**
+	 * Gets the desired value.
+	 *
+	 * @author IsuruM
+	 * @param capitalList the capital list
+	 * @param selectField the select field
+	 * @param fromField the from field
+	 * @param matchingValue the matching value
+	 * @return the desired value
+	 */
+	public String getDesiredValue(List<List<String>> capitalList, String selectField, String fromField, String matchingValue) {
+		String value = null;
+		int count = 0;
+		int rowCount = capitalList.size();
+		int selectFieldNumber = 0;
+		List<String> selectRowList = capitalList.get(0);
+		try {
+			for (int x = 0; x < selectRowList.size(); x++){
+				String columnValue = selectRowList.get(x);
+				if (columnValue.contains(selectField)){
+					selectFieldNumber = x;
+				}
+			}
+			if (selectRowList.contains(fromField)) {
+				for (int i = 1; i < rowCount; i++) {
+					selectRowList = capitalList.get(i);
+					if (selectRowList.contains(matchingValue)) {
+						count = i;
+					}
+				}
+				selectRowList = capitalList.get(count);
+				int index = selectFieldNumber;
+				value = selectRowList.get(index);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return value;
 	}
 
 }
