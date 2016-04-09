@@ -39,6 +39,12 @@ public class TableComponent {
 		return rows;
 	}
 	
+	/**
+	 * Gets the all column.
+	 *
+	 * @author SulakkhanaW
+	 * @return the all column
+	 */
 	public List<WebElement> getAllColumn(){
 		List<WebElement> columns = tableComponentElement.findElements(By.xpath("child::tr/th"));
 		return columns;
