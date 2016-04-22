@@ -55,6 +55,7 @@ public class SetupDriver {
 			}
 
 		case CHROME:
+			System.setProperty("webdriver.chrome.driver", conf.getValue(ConfigurationKeys.CHROME_DRIVER_PATH.getCongfigKey()));
 			 if (desiredCapabilities != null) {
 				 return new ChromeDriver(desiredCapabilities);
 			}else{
@@ -62,6 +63,7 @@ public class SetupDriver {
 			}
 
 		case INTERNETEXPLORER:
+			System.setProperty("webdriver.ie.driver", conf.getValue(ConfigurationKeys.IE_DRIVER_PATH.getCongfigKey()));
 			if (desiredCapabilities != null) {
 				return new InternetExplorerDriver(desiredCapabilities);
 			}else{
