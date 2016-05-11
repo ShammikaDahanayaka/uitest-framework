@@ -6,7 +6,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -16,7 +19,7 @@ import com.wso2telco.test.framework.core.BaseObject;
 import com.wso2telco.test.framework.util.Browser;
 import com.wso2telco.test.framework.util.Timeout;
 
-public class CreateWebDriver extends BaseObject implements WebDriver {
+public class CreateWebDriver extends BaseObject implements WebDriver,TakesScreenshot{
 
 	protected WebDriver driver;
 	private static Logger logger = Logger.getLogger(CreateWebDriver.class);
@@ -137,6 +140,13 @@ public class CreateWebDriver extends BaseObject implements WebDriver {
 	public Options manage() {
 		// TODO Auto-generated method stub
 		return driver.manage();
+	}
+
+	@Override
+	public <X> X getScreenshotAs(OutputType<X> target)
+			throws WebDriverException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
