@@ -111,5 +111,32 @@ public class SQLExecuter {
 
 		return queryResult;
 	}
+	
+	/**
+	 * Execute update query.
+	 *
+	 * @param Query the query
+	 * @return the integer
+	 * @throws Exception the exception
+	 */
+	public static Integer executeUpdateQuery(String Query) throws Exception {
+		Integer result = 0;
+		try {
+			Connection connection = MySQLConnection.getConnection();
+			Statement statement = null;
+			try {
+				statement = connection.createStatement();
+				result = statement.executeUpdate(Query);
+
+			} finally {
+				statement.close();
+			}
+		} catch (Exception e) {
+			System.err.println("SQL Connection error : " + e.getMessage());
+			throw e;
+		}
+
+		return result;
+	}
 
 }

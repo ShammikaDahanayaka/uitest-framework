@@ -39,6 +39,12 @@ public class TableComponent {
 		return rows;
 	}
 	
+	public List<WebElement> getAllRowsByText(String text){
+		String path = "child::tr[contains(.,'" + text + "')]";
+		List<WebElement> rows = tableComponentElement.findElements(By.xpath(path));
+		return rows;
+	}
+	
 	/**
 	 * Gets the all column.
 	 *
