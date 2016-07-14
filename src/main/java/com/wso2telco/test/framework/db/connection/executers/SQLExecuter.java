@@ -119,14 +119,18 @@ public class SQLExecuter {
 	 * @return the integer
 	 * @throws Exception the exception
 	 */
-	public static Integer executeUpdateQuery(String Query) throws Exception {
+	public static boolean executeUpdateQuery(String Query) throws Exception {
 		Integer result = 0;
+		boolean flag = false;
 		try {
 			Connection connection = MySQLConnection.getConnection();
 			Statement statement = null;
 			try {
 				statement = connection.createStatement();
 				result = statement.executeUpdate(Query);
+				if (result == 1){
+					flag = true;
+				}
 
 			} finally {
 				statement.close();
@@ -136,7 +140,7 @@ public class SQLExecuter {
 			throw e;
 		}
 
-		return result;
+		return flag;
 	}
 
 }
