@@ -19,7 +19,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.HttpClientBuilder;
-
 import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
@@ -90,6 +89,7 @@ public class HttpRequestsforTokenAndUserInfor {
 		return response;
 	}
 
+	@SuppressWarnings("deprecation")
 	public CloseableHttpClient getNewHttpClient() {
 		try {
 			KeyStore trustStore = KeyStore.getInstance(KeyStore
@@ -106,7 +106,8 @@ public class HttpRequestsforTokenAndUserInfor {
 			SchemeRegistry registry = new SchemeRegistry();
 			registry.register(new Scheme("http", PlainSocketFactory
 					.getSocketFactory(), 80));
-			registry.register(new Scheme("https", sf, 443));
+			//registry.register(new Scheme("https", sf, 443));
+			registry.register(new Scheme("https", sf, 8243));
 
 			ClientConnectionManager ccm = new ThreadSafeClientConnManager(
 					params, registry);
