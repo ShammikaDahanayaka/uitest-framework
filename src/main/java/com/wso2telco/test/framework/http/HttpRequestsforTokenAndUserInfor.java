@@ -1,6 +1,10 @@
 package com.wso2telco.test.framework.http;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -40,8 +44,13 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
 import java.security.cert.X509Certificate;
+
 import javax.net.ssl.X509TrustManager;
 import javax.net.ssl.SSLSession;
+
+
+
+
 
 
 import com.thoughtworks.selenium.webdriven.commands.GetHtmlSource;
@@ -51,14 +60,10 @@ import com.thoughtworks.selenium.webdriven.commands.GetHtmlSource;
  *
  */
 public class HttpRequestsforTokenAndUserInfor {
-	
-	static{
-		
-		
-	}
+
 	
 	
-	static {
+	/*static {
 		// Create a trust manager that does not validate certificate chains
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
 			public X509Certificate[] getAcceptedIssuers() {
@@ -87,7 +92,7 @@ public class HttpRequestsforTokenAndUserInfor {
 			HttpsURLConnection.setDefaultHostnameVerifier(hv);
 		} catch (Exception e) {
 		}
-	}
+	}*/
 
 	private Map<String, String> header = new HashMap<>();
 	private List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
@@ -141,7 +146,7 @@ public class HttpRequestsforTokenAndUserInfor {
 
 	@SuppressWarnings("deprecation")
 	public CloseableHttpClient getNewHttpClient() {
-		/*try {
+		try {
 			KeyStore trustStore = KeyStore.getInstance(KeyStore
 					.getDefaultType());
 			trustStore.load(null, null);
@@ -164,7 +169,7 @@ public class HttpRequestsforTokenAndUserInfor {
 
 			return new DefaultHttpClient(ccm, params);
 		} catch (Exception e) {
-		}*/
+		}
 		return new DefaultHttpClient();
 	}
 
@@ -194,7 +199,71 @@ public class HttpRequestsforTokenAndUserInfor {
 		urlParameters.clear();
 		return response;
 	}
+	
+	/*public String sendPOSTRequestConnection(String url)
+			throws ClientProtocolException, IOException {
+		StringBuffer retStr = new StringBuffer();
+		HttpsURLConnection connection = null;
+		InputStream is = null;
+		BufferedReader br = null;
+		
+		
+		try {
 
+			byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+			int postDataLength = postData.length;
+			URL url = new URL(url);
+			connection = (HttpsURLConnection) url.openConnection();
+
+			connection.setDoOutput(true);
+			connection.setInstanceFollowRedirects(false);
+			connection.setRequestMethod(Constants.URLProperties.URL_METHOD.getValue());
+			connection.setRequestProperty(Constants.URLProperties.AUTHORIZATION_GRANT_TYPE.getValue(),
+					AuthMethod.BASIC + authheader);
+			connection.setRequestProperty(Constants.URLTypes.CONTENT.getType(),
+					Constants.URLTypes.CONTENT.getValue());
+			connection.setRequestProperty(Constants.URLTypes.ENCODING.getType(),
+					Constants.URLTypes.ENCODING.getValue());
+			connection.setRequestProperty(Constants.URLProperties.LENGTH.getValue(),
+					Integer.toString(postDataLength));
+			connection.setUseCaches(false);
+
+			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+			wr.write(postData);
+			wr.flush();
+			wr.close();
+
+			// filter out invalid http codes
+			if ((connection.getResponseCode() == Status.OK.getStatusCode())
+					|| (connection.getResponseCode() == Status.CREATED.getStatusCode())) {
+				is = connection.getInputStream();
+			} else {
+				is = connection.getErrorStream();
+			}
+
+			br = new BufferedReader(new InputStreamReader(is));
+			String output;
+			while ((output = br.readLine()) != null) {
+				retStr.append(output);
+			}
+		} catch (Exception e) {
+			log.error("TokenReGenarator , makerequest(), ", e);
+			throw new TokenException(TokenError.TOKEN_REGENERATE_FAIL);
+		} finally {
+			try {
+				br.close();
+			} catch (IOException e) {
+			}
+
+			if (connection != null) {
+				connection.disconnect();
+			}
+		}
+
+	
+		return retStr.toString();
+	}
+*/
 	/**
 	 * @param key ,value
 	 * @return void
