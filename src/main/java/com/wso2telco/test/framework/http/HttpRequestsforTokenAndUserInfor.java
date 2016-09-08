@@ -2,10 +2,16 @@ package com.wso2telco.test.framework.http;
 
 import java.io.IOException;
 import java.security.KeyStore;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpVersion;
@@ -33,6 +39,11 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 
+import java.security.cert.X509Certificate;
+import javax.net.ssl.X509TrustManager;
+import javax.net.ssl.SSLSession;
+
+
 import com.thoughtworks.selenium.webdriven.commands.GetHtmlSource;
 
 /**
@@ -40,6 +51,43 @@ import com.thoughtworks.selenium.webdriven.commands.GetHtmlSource;
  *
  */
 public class HttpRequestsforTokenAndUserInfor {
+	
+	static{
+		
+		
+	}
+	
+	
+	static {
+		// Create a trust manager that does not validate certificate chains
+		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+			public X509Certificate[] getAcceptedIssuers() {
+				return new X509Certificate[0];
+			}
+
+			public void checkClientTrusted(X509Certificate[] certs, String authType) {
+			}
+
+			public void checkServerTrusted(X509Certificate[] certs, String authType) {
+			}
+		} };
+
+		// Ignore differences between given hostname and certificate hostname
+		HostnameVerifier hv = new HostnameVerifier() {
+			public boolean verify(String hostname, SSLSession session) {
+				return true;
+			}
+		};
+
+		// Install the all-trusting trust manager
+		try {
+			SSLContext sc = SSLContext.getInstance("SSL");
+			sc.init(null, trustAllCerts, new SecureRandom());
+			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+			HttpsURLConnection.setDefaultHostnameVerifier(hv);
+		} catch (Exception e) {
+		}
+	}
 
 	private Map<String, String> header = new HashMap<>();
 	private List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
@@ -49,6 +97,8 @@ public class HttpRequestsforTokenAndUserInfor {
 	 * @return HttpResponse
 	 * @author ShammikaD
 	 */
+	
+
 
 	public HttpResponse sendGETRequest(String url) {
 		
@@ -91,7 +141,7 @@ public class HttpRequestsforTokenAndUserInfor {
 
 	@SuppressWarnings("deprecation")
 	public CloseableHttpClient getNewHttpClient() {
-		try {
+		/*try {
 			KeyStore trustStore = KeyStore.getInstance(KeyStore
 					.getDefaultType());
 			trustStore.load(null, null);
@@ -114,7 +164,7 @@ public class HttpRequestsforTokenAndUserInfor {
 
 			return new DefaultHttpClient(ccm, params);
 		} catch (Exception e) {
-		}
+		}*/
 		return new DefaultHttpClient();
 	}
 
@@ -128,6 +178,7 @@ public class HttpRequestsforTokenAndUserInfor {
 	public HttpResponse sendPOSTRequest(String url)
 			throws ClientProtocolException, IOException {
 		HttpClient client = getNewHttpClient();
+		//HttpClient client = getNewHttpClient();
 		HttpPost post = new HttpPost(url);
 		
 		// add header
