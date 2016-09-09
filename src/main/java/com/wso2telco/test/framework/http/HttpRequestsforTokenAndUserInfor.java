@@ -63,7 +63,7 @@ public class HttpRequestsforTokenAndUserInfor {
 
 	
 	
-	/*static {
+	static {
 		// Create a trust manager that does not validate certificate chains
 		TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
 			public X509Certificate[] getAcceptedIssuers() {
@@ -92,7 +92,7 @@ public class HttpRequestsforTokenAndUserInfor {
 			HttpsURLConnection.setDefaultHostnameVerifier(hv);
 		} catch (Exception e) {
 		}
-	}*/
+	}
 
 	private Map<String, String> header = new HashMap<>();
 	private List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
