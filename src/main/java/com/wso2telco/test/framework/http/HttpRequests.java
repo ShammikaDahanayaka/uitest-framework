@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -15,13 +16,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 
 /**
  * @author Susantha Pathirana
  *
  */
 public class HttpRequests {
-	
+
 	private Map<String, String> header = new HashMap<>();
 	private List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
 
@@ -48,7 +50,7 @@ public class HttpRequests {
 		return response;
 
 	}
-	
+
 	/**
 	 * @param url
 	 * @return HttpResponse
@@ -56,8 +58,7 @@ public class HttpRequests {
 	 * @throws IOException
 	 * @author Susantha Pathirana
 	 */
-	public HttpResponse sendPOSTRequest(String url)
-			throws ClientProtocolException, IOException {
+	public HttpResponse sendPOSTRequest(String url) throws ClientProtocolException, IOException {
 		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(url);
 
@@ -75,7 +76,8 @@ public class HttpRequests {
 	}
 
 	/**
-	 * @param key ,value
+	 * @param key
+	 *            ,value
 	 * @return void
 	 * @author Susantha Pathirana
 	 */
@@ -84,7 +86,8 @@ public class HttpRequests {
 	}
 
 	/**
-	 * @param key ,value
+	 * @param key
+	 *            ,value
 	 * @return void
 	 * @author Susantha Pathirana
 	 */
@@ -92,4 +95,13 @@ public class HttpRequests {
 		urlParameters.add(new BasicNameValuePair(key, value));
 	}
 
+	/**
+	 * @param url
+	 * @return HttpResponse
+	 * @throws IOException
+	 * @author Susantha Pathirana
+	 */
+	public String getBodyValueofGETRequest(String url) throws IOException {
+		return EntityUtils.toString(sendGETRequest(url).getEntity(), "UTF-8");
+	}
 }
