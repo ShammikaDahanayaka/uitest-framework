@@ -18,17 +18,21 @@ public class TestBase extends FObject {
 	}
 
 	
-	public void launchBrowser(){
+	public WebDriver launchBrowser(){
 		driver =  new CreateWebDriver();
+		return driver;
 	}
-	public void launchBrowser(Browser browser){
+	public WebDriver launchBrowser(Browser browser){
 		driver =  new CreateWebDriver(browser);
+		return driver;
 	}
-	public void launchBrowser(FirefoxProfile firefoxProfile){
+	public WebDriver launchBrowser(FirefoxProfile firefoxProfile){
 		driver =  new CreateWebDriver(firefoxProfile);
+		return driver;
 	}
-	public void launchBrowser(DesiredCapabilities desiredCapabilities){
+	public WebDriver launchBrowser(DesiredCapabilities desiredCapabilities){
 		driver =  new CreateWebDriver(desiredCapabilities);
+		return driver;
 	}
 
 }
