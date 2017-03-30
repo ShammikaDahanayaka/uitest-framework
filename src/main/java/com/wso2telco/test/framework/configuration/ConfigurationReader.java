@@ -2,8 +2,12 @@ package com.wso2telco.test.framework.configuration;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.omg.CORBA.portable.OutputStream;
 
 import com.wso2telco.test.framework.util.Default;
 import com.wso2telco.test.framework.util.Timeout;
@@ -19,9 +23,10 @@ public class ConfigurationReader {
     public ConfigurationReader(String path) {
         this.path = path;
     }
-
-    public Properties readConfig() {
+    
+       public Properties readConfig() {
         InputStream istream = getClass().getResourceAsStream(path);
+      
         if (null == istream) {
             try {
                 istream = new FileInputStream(path);
