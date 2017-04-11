@@ -1,9 +1,14 @@
 package com.wso2telco.test.framework.configuration;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import com.wso2telco.test.framework.util.Default;
 import com.wso2telco.test.framework.util.Wso2TestFrameworkException;
 
 public class CoreConfigurations implements Configuration {
@@ -44,7 +49,24 @@ public class CoreConfigurations implements Configuration {
 
 	@Override
 	public void setValue(String key,String value) {
-		configDataFile.setProperty(key, value);
+		String path = Default.CONFIG_PATH.getValue();
+				path=getClass().getResource(path).getFile();
+		FileOutputStream out;
+		ConfigurationReader reader = new ConfigurationReader();
+		reader.readConfig();
+		try {
+			out = new FileOutputStream(path);
+			configDataFile.setProperty(key, value);
+	    	configDataFile.store(out,new Date().toString());
+			out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public static Configuration getCoreConfig() {
