@@ -1,17 +1,38 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.wso2telco</groupId>
-  <artifactId>uitest-framework</artifactId>
-  <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>uitest-framework</name>
-  <url>http://maven.apache.org</url>
-   <properties>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.wso2telco.test</groupId>
+	<artifactId>uitest-framework</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>uitest-framework</name>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+  <distributionManagement>
+        <snapshotRepository>
+            <id>wso2Telco.snapshots</id>
+            <name>Snapshot repo</name>
+            <!-- url>http://maven.wso2telco.com/nexus/content/repositories/snapshots</url-->
+            <url>file:///projects/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <!-- Publish the versioned releases here -->
+        <repository>
+            <id>wso2telco.releases</id>
+            <name>release repo</name>
+            <!-- url>http://maven.wso2telco.com/nexus/content/repositories/releases/</url-->
+            <url>http:///projects/nexus/content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
+    <scm>
+        <url>https://github.com/Nuwan-Walisundara/uitest-framework.git</url>
+        <developerConnection>scm:git:https://github.com/Nuwan-Walisundara/uitest-framework.git</developerConnection>
+        <connection>scm:git:https://github.com/Nuwan-Walisundara/uitest-framework.git</connection>
+        <tag>HEAD</tag>
+    </scm>
+    
 	<build>
 		<!-- <sourceDirectory>src/main/java</sourceDirectory> <resources> <resource> 
 			<directory>src/resources</directory> <excludes> <exclude>**/*.java</exclude> 
@@ -37,6 +58,16 @@
 					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
+				<configuration>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 	<dependencies>
