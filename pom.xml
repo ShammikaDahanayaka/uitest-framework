@@ -24,9 +24,9 @@
 		</repository>
 	</distributionManagement>
 	<scm>
-		<url>https://github.com/WSO2Telco/intgw-test.git</url>
-		<developerConnection>scm:git:https://github.com/WSO2Telco/intgw-test.git</developerConnection>
-		<connection>scm:git:https://github.com/WSO2Telco/intgw-test.git</connection>
+		<url>https://github.com/WSO2Telco/uitest-framework.git</url>
+		<developerConnection>scm:git:https://github.com/WSO2Telco/uitest-framework.git</developerConnection>
+		<connection>scm:git:https://github.com/WSO2Telco/uitest-framework.git</connection>
 		<tag>HEAD</tag>
 	</scm>
     
