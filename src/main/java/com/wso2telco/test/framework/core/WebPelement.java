@@ -5,7 +5,10 @@ import org.openqa.selenium.WebElement;
 public interface WebPelement extends WebElement {
 	
 	public void initialize()throws Exception;
-	/*public UIType getUiType ();
-	public String getUiValue ();*/
-
+	
+	public boolean  isAvailable();
+	public void  sendEnter();
+	public void  sendKeys(CharSequence... keysToSend);
+	public void  clearAndSendkeys(CharSequence... keysToSend);
+	
 }

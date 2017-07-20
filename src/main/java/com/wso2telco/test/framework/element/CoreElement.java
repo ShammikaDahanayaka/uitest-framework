@@ -1,10 +1,13 @@
 package com.wso2telco.test.framework.element;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
@@ -14,11 +17,22 @@ import org.openqa.selenium.WebElement;
 import com.wso2telco.test.framework.core.WebPelement;
 import com.wso2telco.test.framework.util.UIType;
 
-public class DefaultElement extends BasicElement implements WebPelement{
-	private WebElement element;
+public class CoreElement extends BasicElement implements WebPelement{
 	
-    public DefaultElement(UIType uiType, String value) {
+	Logger logger = Logger.getLogger(CoreElement.class);
+	
+	private WebElement element;
+	protected boolean isAvaialble;
+	
+    
+
+	public CoreElement(UIType uiType, String value) {
 		super(uiType, value);
+		
+	}
+    
+    public CoreElement(UIType uiType, String value,String description) {
+		super(uiType, value,description);
 		
 	}
 
@@ -26,12 +40,19 @@ public class DefaultElement extends BasicElement implements WebPelement{
     public void initialize() throws Exception {
 		
 		try {
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			
+			logger.debug("Locating element " + getUiType() + ":" + getUiValue());
+			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 			List<WebElement> found = driver.findElements(getBy(uiType,uiValue));
 			if (found.size() > 0) {
+				logger.debug("Found element " + getUiType() + ":" + getUiValue());
 				element = found.get(0);
+				setAvaialble(true);
+				if(found.size() > 1)
+					logger.debug("Found more than one element " + getUiType() + ":" + getUiValue());
 			}
 		} catch (Exception e) {
+			setAvaialble(false);
 			logInstruction("Cannot Get Element by "+uiType+"-'getElement()" + uiValue
 					+ ":" + e.getMessage());
 			throw new Exception("Cannot Get Element by "+uiType+"-'getElement()'"
@@ -72,15 +93,15 @@ public class DefaultElement extends BasicElement implements WebPelement{
 
 	@Override
 	public void click() {
-		// TODO Auto-generated method stub
 		try {
+			logger.debug("click on element " + getDescription());
 			element.click();
 		} catch (WebDriverException e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			
 		}
-		
+
 	}
 
 	@Override
@@ -99,9 +120,10 @@ public class DefaultElement extends BasicElement implements WebPelement{
 	public void sendKeys(CharSequence... keysToSend) {
 		
 		try {
+			logger.debug("sending keys " +Arrays.toString(keysToSend));
 			element.sendKeys(keysToSend);
 		} catch (WebDriverException e) {
-			// TODO: handle exception
+			
 			e.printStackTrace();
 			
 		}
@@ -112,9 +134,10 @@ public class DefaultElement extends BasicElement implements WebPelement{
 	public void clear() {
 		
 		try {
+			logger.debug("clear text");
 			element.clear();
 		} catch (WebDriverException e) {
-			// TODO: handle exception
+			
 			e.printStackTrace();
 			
 		}
@@ -162,7 +185,7 @@ public class DefaultElement extends BasicElement implements WebPelement{
 		// TODO Auto-generated method stub
 		return element.findElement(by);
 	}
-
+	
 	@Override
 	public boolean isDisplayed() {
 		// TODO Auto-generated method stub
@@ -183,20 +206,56 @@ public class DefaultElement extends BasicElement implements WebPelement{
 
 	@Override
 	public String getCssValue(String propertyName) {
-		// TODO Auto-generated method stub
+		logger.debug("get css value for property "+propertyName);
 		return element.getCssValue(propertyName);
 	}
 
 
 	@Override
-	public Rectangle getRect() {
-		// TODO Auto-generated method stub
-		return null;
+	public void sendEnter() {
+		try {
+			logger.debug("send enter keys");
+			element.sendKeys(Keys.ENTER);
+		} catch (WebDriverException e) {
+			logger.debug(e);
+		}
+		
 	}
 
 
+	@Override
+	public void clearAndSendkeys(CharSequence... keysToSend) {
+		try {
+			logger.debug("clear and send keys " + keysToSend);
+			element.clear();
+			sendKeys(keysToSend);
+		} catch (WebDriverException e) {
+			logger.debug(e);
+		}
+		
+	}
+
+	@Override
+	public Rectangle getRect() {
+		// TODO Auto-generated method stub
+		
+		return element.getRect();
+		
+	}
+
 	
 
+
+
+	private void setAvaialble(boolean isAvaialble) {
+		this.isAvaialble = isAvaialble;
+	}
+
+	@Override
+	public boolean isAvailable() {
+		// TODO Auto-generated method stub
+		return isAvaialble;
+	}
 	
 
 }

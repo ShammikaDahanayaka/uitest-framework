@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import com.wso2telco.test.framework.element.table.Table;
 import com.wso2telco.test.framework.util.UIType;
 
 public interface PageActions {
@@ -21,10 +22,12 @@ public interface PageActions {
 	
 	
 	public WebPelement defineEelement(UIType uiType,String value);
+	public WebPelement defineEelement(UIType uiType,String value,String description);
 	//public WebPelement locate(WebPelement telement);
 	public void selectItem(WebPelement pelement, String tagName, String textToContain)
 			throws Exception;
-	public WebElement getElement(WebPelement telement);
+	public WebPelement getElement(WebPelement telement);
+	public Table getTable(UIType uiType, String value);
 
 	/**
 	 * Jan 8, 2016
