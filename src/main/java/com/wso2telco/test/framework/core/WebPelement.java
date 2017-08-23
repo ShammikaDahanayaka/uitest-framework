@@ -10,5 +10,6 @@ public interface WebPelement extends WebElement {
 	public void  sendEnter();
 	public void  sendKeys(CharSequence... keysToSend);
 	public void  clearAndSendkeys(CharSequence... keysToSend);
+	boolean isExists();
 	
 }

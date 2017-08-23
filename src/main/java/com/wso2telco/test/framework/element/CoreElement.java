@@ -8,14 +8,20 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.Rectangle;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import com.wso2telco.test.framework.core.WebPelement;
 import com.wso2telco.test.framework.util.UIType;
+import com.google.common.base.Function; 
+import org.openqa.selenium.TimeoutException; 
 
 public class CoreElement extends BasicElement implements WebPelement{
 	
@@ -43,12 +49,13 @@ public class CoreElement extends BasicElement implements WebPelement{
 			
 			logger.debug("Locating element " + getUiType() + ":" + getUiValue());
 			driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-			List<WebElement> found = driver.findElements(getBy(uiType,uiValue));
-			if (found.size() > 0) {
+			final WebElement  found =waitForElementToAppear(getBy(uiType,uiValue));
+		/*	driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
+			List<WebElement> found = driver.findElements(getBy(uiType,uiValue));*/
+			if (found!=null) {
 				logger.debug("Found element " + getUiType() + ":" + getUiValue());
-				element = found.get(0);
+				element = found;
 				setAvaialble(true);
-				if(found.size() > 1)
 					logger.debug("Found more than one element " + getUiType() + ":" + getUiValue());
 			}
 		} catch (Exception e) {
@@ -256,6 +263,55 @@ public class CoreElement extends BasicElement implements WebPelement{
 		// TODO Auto-generated method stub
 		return isAvaialble;
 	}
+
+	@Override
+	/**
+	 * check whether the element exists or not
+	 */
+	public boolean isExists() {
+		WebElement webElement =	waitForElementToAppear(getBy(uiType,uiValue));
+		return webElement!=null?true:false;
+	}
 	
 
+	
+	/**
+	 * this will wait fluently until rendering the element .
+	 * @param locator
+	 * @return
+	 */
+	protected WebElement waitForElementToAppear(final By locator) {
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+									.withTimeout(30, TimeUnit.SECONDS)
+									.pollingEvery(5, TimeUnit.SECONDS)
+									.ignoring(NoSuchElementException.class);
+
+		WebElement element = null;
+		try {
+			element = wait.until(new Function<WebDriver, WebElement>() {
+
+				@Override
+				public WebElement apply(WebDriver driver) {
+					return driver.findElement(locator);
+				}
+			});
+		} catch (TimeoutException e) {
+			try {
+				// I want the error message on what element was not found
+				driver.findElement(locator);
+			} catch (NoSuchElementException renamedErrorOutput) {
+				// print that error message
+				renamedErrorOutput.addSuppressed(e);
+				// throw new
+				// NoSuchElementException("Timeout reached when waiting for element to be
+				// found!"
+				// + e.getMessage(), correctErrorOutput);
+				throw renamedErrorOutput;
+			}
+			e.addSuppressed(e);
+			throw new NoSuchElementException("Timeout reached when searching for element!", e);
+		}
+
+		return element;
+	}
 }
