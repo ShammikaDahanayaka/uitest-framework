@@ -3,7 +3,7 @@
 	<groupId>com.wso2telco.test</groupId>
 	<artifactId>uitest-framework</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<name>uitest-framework</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -27,7 +27,7 @@
 		<url>https://github.com/WSO2Telco/uitest-framework.git</url>
 		<developerConnection>scm:git:https://github.com/WSO2Telco/uitest-framework.git</developerConnection>
 		<connection>scm:git:https://github.com/WSO2Telco/uitest-framework.git</connection>
-		<tag>HEAD</tag>
+		<tag>v1.0.2</tag>
 	</scm>
     
 	<build>
