@@ -21,6 +21,8 @@ public class PrePageBase extends FObject implements PageActions {
 	private WebElement element;
 	private WebPelement pelement;
 	private List<WebElement> elementList;
+	protected UIType uiType;
+	protected String value;
 	
 	public PrePageBase(WebDriver driver) {
 		super(driver);
@@ -30,42 +32,38 @@ public class PrePageBase extends FObject implements PageActions {
 		
 	}
 	
-	Wait wait = new FluentWait(driver)
-			 
-		    .withTimeout(30, TimeUnit.SECONDS)
-		 
-		    .pollingEvery(5, TimeUnit.SECONDS)
-		    
-		    .ignoring(NoSuchElementException.class);
-	
 	@Override
 	public WebElement getElement(UIType uiType, String value) throws Exception {
-		
-		try {
-			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-			Function<WebDriver, List<WebElement>> function = new Function<WebDriver, List<WebElement>>() {
-				public List<WebElement> apply(WebDriver driver, UIType uiType, String value) {
-					List<WebElement> element = driver.findElements(getBy(uiType,value));
+		this.uiType = uiType;
+		this.value = value;
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    	FluentWait<WebDriver> wait = new FluentWait(driver)
+    			 
+    		    .withTimeout(100, TimeUnit.SECONDS)
+    		 
+    		    .pollingEvery(10, TimeUnit.SECONDS)
+    		 
+    		    .ignoring(NoSuchElementException.class);
+    	
+    	//Function<WebDriver, WebElement> function = ;
+
+		try{
+			this.element = (WebElement) wait.until(new Function<WebDriver, WebElement>() {
+				public WebElement apply(WebDriver arg0) {
+					int i = 0;
+					logger.debug("Locating element " + getUiType() + ":" + getUiValue());
+					WebElement element = arg0.findElement(getBy(getUiType(),getUiValue()));
+					System.out.println("Checking for the object!! "+ i++);
 					if (element != null) {
-						logInstruction("Element is empty");
+						logger.debug("Found element " + getUiType() + ":" + getUiValue());
 					}
 					return element;
 				}
-
-				@Override
-				public List<WebElement> apply(WebDriver arg0) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-			};
-			List<WebElement> found = (List<WebElement>) wait.until(function);		//driver.findElements(getBy(uiType,value));
-			if (found.size() > 0) {
-				element = found.get(0);
-			}
-		} catch (Exception e) {
-			logInstruction("Cannot Get Element by "+uiType+"-'getElement()" + value
+			});
+		}catch(Exception e){
+			logInstruction("Cannot Get Element by "+uiType+"-'getElement()" + getUiValue()
 					+ ":" + e.getMessage());
-			throw new Exception("Cannot Get Element by "+uiType+"-'getElemnt()'"
+			throw new Exception("Cannot Get Element by "+uiType+"-'getElement()'"
 					+ e.getMessage());
 		}
 		return element;
@@ -239,6 +237,14 @@ public class PrePageBase extends FObject implements PageActions {
 		}
 		return table;
 		
+	}
+	
+	public UIType getUiType() {
+		return uiType;
+	}
+	
+	public String getUiValue() {
+		return value;
 	}
 
 }
